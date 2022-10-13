@@ -1,7 +1,9 @@
-FROM tomcat:8-jre8 
-WORKDIR /app
-COPY --from=build /app/target/hello-java-*.jar /app/app.jar
-EXPOSE 8080
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar app.jar"]
+FROM tomcat:8.5
 
+MAINTAINER Satheesh B "satheesh442@gmail.com"
+
+EXPOSE 8080
+
+USER root
+
+COPY target/spark*.war webapps/my-app.war
