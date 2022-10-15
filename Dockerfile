@@ -1,9 +1,8 @@
 FROM tomcat:8.5
 
-MAINTAINER Satheesh B "satheesh442@gmail.com"
+
 
 EXPOSE 8080
 
-USER root
-
-COPY target/spark*.war webapps/my-app.war
+ADD target/sparkjava-hello-world-1.0.war
+Entrypoint ["/sparkjava-hello-world-1.0.war"]
