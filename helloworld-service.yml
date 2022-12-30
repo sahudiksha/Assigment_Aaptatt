@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name:javaapp
+  name: javaapp
   labels:
     app: javaapp
 spec:
