@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: javaapp
-        image: thetips4you/productcatalogue:latest
+        image: dikshasahu/javaapp:latest
         ports:
         - containerPort: 8080
         livenessProbe:
