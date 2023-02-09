@@ -30,5 +30,5 @@ pipeline {
 				sh 'docker push dikshasahu/tomcat:1'
 			}
 		}
-   }
+       }
   }
