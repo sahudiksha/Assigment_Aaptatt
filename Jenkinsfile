@@ -1,4 +1,5 @@
-pipeline {
+
+    pipeline {
     agent any
        stages {
         stage('code') {
@@ -14,6 +15,8 @@ pipeline {
             }
        }
     }
+  }
+}
 
 
 
