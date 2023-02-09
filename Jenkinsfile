@@ -14,8 +14,6 @@ pipeline {
                sh 'mvn package'
             }
        }
-       stages {
-
 		stage('build docker image') {
 			steps {
 				sh 'docker build -t  dikshasahu/javaapp:1 .'
@@ -29,10 +27,4 @@ pipeline {
 
    }
   }
-
-}
-
-
-
-   
 
