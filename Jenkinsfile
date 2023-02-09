@@ -11,6 +11,7 @@ pipeline {
         }
         stage('build') {
             steps {
+	       checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sahu04/Assigment_Aaptatt.git']])	    
                sh 'mvn package'
             }
        }
