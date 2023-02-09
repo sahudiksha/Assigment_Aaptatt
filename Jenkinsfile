@@ -6,7 +6,6 @@ pipeline {
                git 'https://github.com/sahu04/Assigment_Aaptatt.git'
             }
         }
-
         stages {
         stage('build') {
             steps {
