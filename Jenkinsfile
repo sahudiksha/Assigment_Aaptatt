@@ -27,7 +27,7 @@ pipeline {
 		}
               stage('Push') {
                         steps {
-				sh 'docker push dikshasahu/tomcat:latest'
+				sh 'docker push dikshasahu/tomcat:1'
 			}
 		}
    }
