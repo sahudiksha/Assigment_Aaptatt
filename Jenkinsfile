@@ -17,7 +17,7 @@ pipeline {
        }
 		stage('build docker image') {
 			steps {
-				sh 'docker build -t  dikshasahu/javaapp:1 .'
+				sh 'docker build -t tomcat:1 .'
 			}
 		}
         stage('Login') {
