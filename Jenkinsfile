@@ -20,12 +20,15 @@ pipeline {
 				sh 'docker build -t tomcat:1 .'
 			}
 		}
-        stage('Login') {
+             stage('Login') {
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 			}
 		}
-
+              stage('Push') {
+                        steps {
+				sh 'docker push dikshasahu/tomcat:latest'
+			}
+		}
    }
   }
-
