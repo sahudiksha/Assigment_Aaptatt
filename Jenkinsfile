@@ -17,7 +17,7 @@ pipeline {
        }
 		stage('build docker image') {
 			steps {
-				sh 'docker build -t tomcat:1 .'
+				sh 'docker build -t tomcat:latest .'
 			}
 		}
              stage('Login') {
@@ -27,8 +27,8 @@ pipeline {
 		}
               stage('Push') {
                         steps {
-				sh 'docker tag tomcat dikshasahu/tomcat:1'
-				sh 'docker push dikshasahu/tomcat:1'
+				sh 'docker tag tomcat dikshasahu/tomcat:latest'
+				sh 'docker push dikshasahu/tomcat:latest'
 			}
 		}
        }
