@@ -27,6 +27,7 @@ pipeline {
 		}
               stage('Push') {
                         steps {
+				sh 'docker tag tomcat dikshasahu/tomcat:1'
 				sh 'docker push dikshasahu/tomcat:1'
 			}
 		}
