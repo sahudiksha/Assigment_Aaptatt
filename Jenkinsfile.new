@@ -1,43 +1,29 @@
 pipeline {
     agent any
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-diksha')
-    }
-    stages {
-        stage('parallel deployment') {
-            parallel {
-                stage('code') {
-                    steps {
-                        git 'https://github.com/sahu04/Assigment_Aaptatt.git'
-                    }
-                }
-                stage('build') {
-                    steps {
-                        checkout scmGit(
-                            branches: [[name: '*/master']],
-                            extensions: [],
-                            userRemoteConfigs: [[url: 'https://github.com/sahu04/Assigment_Aaptatt.git']]
-                        )
-                        sh 'mvn package'
-                    }
-                }
-        
-        stage('build docker image') {
+       environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub-diksha')
+	}
+       stages {
+        stage('code') {
             steps {
-                sh 'docker build -t tomcat:latest .'
+               git 'https://github.com/sahu04/Assigment_Aaptatt.git'
             }
         }
-        stage('Login') {
+        stage('build') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+	       checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sahu04/Assigment_Aaptatt.git']])	    
+               sh 'mvn package'
             }
-        }
-        stage('Push') {
+       }
+	    stage('upload to S3') {
             steps {
-                sh 'docker tag tomcat dikshasahu/tomcat:latest'
-                sh 'docker push dikshasahu/tomcat:latest'
+                withAWS(region: AWS_DEFAULT_REGION, credentials: [
+                        awsAccessKeyId(credentialsId: 'aws-access-key-id', type: 'AmazonWebServicesCredentials'),
+                        awsSecretAccessKey(credentialsId: 'aws-secret-access-key', type: 'AmazonWebServicesCredentials')
+                ]) {
+                    sh 'aws s3 cp target/my-build.jar s3://${S3_BUCKET_NAME}/builds/my-build-${BUILD_NUMBER}.jar'
+                }
             }
         }
     }
-} }
 }
