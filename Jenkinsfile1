@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERFILE_PATH = "./Dockerfile"
         DOCKER_IMAGE_NAME = ""
-        TRIVY_REPORT_PATH ="trivy-scan-report.json"
+        TRIVY_REPORT_PATH = "trivy-scan-report.json"
     }
 
     stages {
@@ -19,6 +19,10 @@ pipeline {
                 script {
                     // Set dockerImageName as an environment variable
                     DOCKER_IMAGE_NAME = sh(script: "awk 'NR==1 {print \$2}' ${DOCKERFILE_PATH}", returnStdout: true).trim()
+                    // Ensure that DOCKER_IMAGE_NAME is not empty before attempting to build
+                    if (DOCKER_IMAGE_NAME.isEmpty()) {
+                        error "Failed to obtain Docker image name."
+                    }
                     sh "docker build -t ${DOCKER_IMAGE_NAME} -f ${DOCKERFILE_PATH} ."
                 }
             }
@@ -37,9 +41,13 @@ pipeline {
     post {
         always {
             script {
-                sh "docker rmi ${DOCKER_IMAGE_NAME}"
+                // Ensure that DOCKER_IMAGE_NAME is not empty before attempting to remove
+                if (!DOCKER_IMAGE_NAME.isEmpty()) {
+                    sh "docker rmi ${DOCKER_IMAGE_NAME}"
+                }
                 archiveArtifacts artifacts: 'trivy-scan-report.json', followSymlinks: false
             }
         }
     }
 }
+
