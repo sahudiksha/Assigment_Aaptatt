@@ -19,10 +19,6 @@ pipeline {
                 script {
                     // Set dockerImageName as an environment variable
                     DOCKER_IMAGE_NAME = sh(script: "awk 'NR==1 {print \$2}' ${DOCKERFILE_PATH}", returnStdout: true).trim()
-                    // Ensure that DOCKER_IMAGE_NAME is not empty before attempting to build
-                    if (DOCKER_IMAGE_NAME.isEmpty()) {
-                        error "Failed to obtain Docker image name."
-                    }
                     sh "docker build -t ${DOCKER_IMAGE_NAME} -f ${DOCKERFILE_PATH} ."
                 }
             }
