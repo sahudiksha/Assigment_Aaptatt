@@ -28,3 +28,8 @@ jobs:
         run: python  pr_version_release.py 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: pull_requests
+          path: pull_requests.txt
