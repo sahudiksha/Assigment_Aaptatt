@@ -29,7 +29,6 @@ def get_pull_requests_between_releases(owner, repo, release_version_start, relea
             return None
 
     return pull_requests
-
 if __name__ == "__main__":
     with open('config.json') as config_file:
         config = json.load(config_file)
@@ -38,18 +37,22 @@ if __name__ == "__main__":
         config.get('owner'), config.get('repo'), config.get('release_version_start'), config.get('release_version_end'), config.get('github_token')
 
     pull_requests = get_pull_requests_between_releases(owner, repo, release_version_start, release_version_end, github_token)
-    if pull_requests:
+    
+    if pull_requests is not None:
         total_pull_requests_msg = f'Total pull requests between {release_version_start} and {release_version_end}: {len(pull_requests)}'
         print(total_pull_requests_msg)
         output_file = 'pull_requests.txt'
         with open(output_file, 'w') as f:
             f.write(f'Total pull requests between {release_version_start} and {release_version_end}: {len(pull_requests)}\n')
             f.write("Pull Requests:\n")
-            for pr in pull_requests:
-                f.write(f'- #{pr["number"]}: {pr["title"]} by {pr["user"]["login"]}\n')
-                f.write(f'  URL: {pr["html_url"]}\n')
-                f.write(f'  State: {pr["state"]}\n')
-                f.write(f'  Description: {pr["body"]}\n\n' if pr.get("body") else '\n')
+            if len(pull_requests) == 0:
+                f.write("No pull requests found between the specified release versions.\n")
+            else:
+                for pr in pull_requests:
+                    f.write(f'- #{pr["number"]}: {pr["title"]} by {pr["user"]["login"]}\n')
+                    f.write(f'  URL: {pr["html_url"]}\n')
+                    f.write(f'  State: {pr["state"]}\n')
+                    f.write(f'  Description: {pr["body"]}\n\n' if pr.get("body") else '\n')
         print(f'Pull requests details are saved in {output_file}')
     else:
         print('Failed to retrieve pull requests.')
