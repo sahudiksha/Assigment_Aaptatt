@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 
 def get_pull_requests_between_releases(owner, repo, release_version_start, release_version_end, github_token):
@@ -29,12 +30,13 @@ def get_pull_requests_between_releases(owner, repo, release_version_start, relea
             return None
 
     return pull_requests
-if __name__ == "__main__":
-    with open('config.json') as config_file:
-        config = json.load(config_file)
 
-    owner, repo, release_version_start, release_version_end, github_token = \
-        config.get('owner'), config.get('repo'), config.get('release_version_start'), config.get('release_version_end'), config.get('github_token')
+if __name__ == "__main__":
+    owner = os.getenv('OWNER')
+    repo = os.getenv('REPO')
+    release_version_start = os.getenv('RELEASE_VERSION_START')
+    release_version_end = os.getenv('RELEASE_VERSION_END')
+    github_token = os.getenv('GITHUB_TOKEN')
 
     pull_requests = get_pull_requests_between_releases(owner, repo, release_version_start, release_version_end, github_token)
     
