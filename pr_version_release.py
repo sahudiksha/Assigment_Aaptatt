@@ -36,7 +36,7 @@ if __name__ == "__main__":
     repo = os.getenv('REPO')
     release_version_start = os.getenv('RELEASE_VERSION_START')
     release_version_end = os.getenv('RELEASE_VERSION_END')
-    github_token = os.getenv('GITHUB_TOKEN')
+    github_token = os.getenv('MY_GITHUB_TOKEN')
 
     pull_requests = get_pull_requests_between_releases(owner, repo, release_version_start, release_version_end, github_token)
     
