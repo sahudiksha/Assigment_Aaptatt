@@ -1,3 +1,47 @@
+# name: Python Script Workflow
+# run-name: PR_release_version
+# on:
+#   push:
+#     branches:
+#       - master  
+#   pull_request:
+#     branches:
+#       - master  
+
+# jobs:
+#   run_script:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.x'  
+
+#       - name: Install dependencies
+#         run: pip install requests
+
+#       - name: Run Python script
+#         run: python pr_version_release.py 
+#         env:
+#           OWNER: ${{ secrets.OWNER }}
+#           REPO: ${{ secrets.REPO }}
+#           RELEASE_VERSION_START: ${{ secrets.RELEASE_VERSION_START }}
+#           RELEASE_VERSION_END: ${{ secrets.RELEASE_VERSION_END }}
+#           MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+
+#       - name: Upload artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: pull_requests
+#           path: pull_requests.txt
+
+
+
+
 name: Python Script Workflow
 run-name: PR_release_version
 on:
@@ -7,10 +51,17 @@ on:
   pull_request:
     branches:
       - master  
+  workflow_dispatch:
+    inputs:
+      release_version_updated:
+        description: 'Trigger the workflow when the secrets release version is updated'
+        required: false
+        default: 'false'
 
 jobs:
   run_script:
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.release_version_updated == 'true'
 
     steps:
       - name: Checkout code
@@ -38,3 +89,4 @@ jobs:
         with:
           name: pull_requests
           path: pull_requests.txt
+
