@@ -1,5 +1,5 @@
 name: Python Script Workflow
-run-name: PR_release_version
+
 on:
   push:
     branches:
@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master  
+
 jobs:
   run_script:
     runs-on: ubuntu-latest
@@ -24,9 +25,14 @@ jobs:
         run: pip install requests
 
       - name: Run Python script
-        run: python  pr_version_release.py 
+        run: python pr_version_release.py 
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          OWNER: ${{ secrets.OWNER }}
+          REPO: ${{ secrets.REPO }}
+          RELEASE_VERSION_START: ${{ secrets.RELEASE_VERSION_START }}
+          RELEASE_VERSION_END: ${{ secrets.RELEASE_VERSION_END }}
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
