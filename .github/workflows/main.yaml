@@ -41,7 +41,7 @@
 
 
 name: PR_release_version
-
+run-name: PR_release_version
 on:
   push:
     branches:
